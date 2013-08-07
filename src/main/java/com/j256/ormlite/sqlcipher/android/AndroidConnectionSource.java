@@ -1,19 +1,18 @@
-package com.j256.ormlite.android;
+package com.j256.ormlite.sqlcipher.android;
 
-import java.sql.SQLException;
-
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-
-import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.db.DatabaseType;
-import com.j256.ormlite.db.SqliteAndroidDatabaseType;
 import com.j256.ormlite.logger.Logger;
 import com.j256.ormlite.logger.LoggerFactory;
 import com.j256.ormlite.misc.SqlExceptionUtil;
+import com.j256.ormlite.sqlcipher.android.apptools.OrmLiteSqliteOpenHelper;
+import com.j256.ormlite.sqlcipher.db.SqliteAndroidDatabaseType;
 import com.j256.ormlite.support.BaseConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.support.DatabaseConnection;
+import net.sqlcipher.database.SQLiteDatabase;
+import net.sqlcipher.database.SQLiteOpenHelper;
+
+import java.sql.SQLException;
 
 /**
  * Android version of the connection source. Takes a standard Android {@link SQLiteOpenHelper}. For best results, use
@@ -59,8 +58,15 @@ public class AndroidConnectionSource extends BaseConnectionSource implements Con
 		if (connection == null) {
 			SQLiteDatabase db;
 			if (sqliteDatabase == null) {
-				try {
-					db = helper.getWritableDatabase();
+                try {
+                    String password;
+                    if (helper instanceof OrmLiteSqliteOpenHelper) {
+                        OrmLiteSqliteOpenHelper openHelper = (OrmLiteSqliteOpenHelper) helper;
+                        password = openHelper.getPassword();
+                    } else {
+                        throw new IllegalStateException("SQLiteOpenHelper must be an instance of OrmLiteSqliteOpenHelper");
+                    }
+					db = helper.getWritableDatabase(password);
 				} catch (android.database.SQLException e) {
 					throw SqlExceptionUtil.create("Getting a writable database from helper " + helper + " failed", e);
 				}

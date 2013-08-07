@@ -1,15 +1,14 @@
-package com.j256.ormlite.android.apptools;
+package com.j256.ormlite.sqlcipher.android.apptools;
 
-import static org.junit.Assert.assertTrue;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
+import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.Collection;
 
-import org.junit.Test;
-
-import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.field.ForeignCollectionField;
+import static org.junit.Assert.assertTrue;
 
 public class OrmLiteConfigUtilTest {
 

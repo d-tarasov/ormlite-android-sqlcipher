@@ -1,17 +1,16 @@
-package com.j256.ormlite.android.apptools;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+package com.j256.ormlite.sqlcipher.android.apptools;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.database.sqlite.SQLiteOpenHelper;
-
 import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.logger.Logger;
 import com.j256.ormlite.logger.LoggerFactory;
+import net.sqlcipher.database.SQLiteOpenHelper;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 /**
  * This helps organize and access database connections to optimize connection sharing. There are several schemes to

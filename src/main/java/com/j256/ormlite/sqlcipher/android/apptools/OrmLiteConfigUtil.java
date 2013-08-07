@@ -1,30 +1,22 @@
-package com.j256.ormlite.android.apptools;
+package com.j256.ormlite.sqlcipher.android.apptools;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.db.DatabaseType;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.DatabaseFieldConfig;
+import com.j256.ormlite.field.ForeignCollectionField;
+import com.j256.ormlite.sqlcipher.db.SqliteAndroidDatabaseType;
+import com.j256.ormlite.table.DatabaseTable;
+import com.j256.ormlite.table.DatabaseTableConfig;
+import com.j256.ormlite.table.DatabaseTableConfigLoader;
+
+import java.io.*;
 import java.lang.reflect.Field;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import com.j256.ormlite.dao.DaoManager;
-import com.j256.ormlite.db.DatabaseType;
-import com.j256.ormlite.db.SqliteAndroidDatabaseType;
-import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.field.DatabaseFieldConfig;
-import com.j256.ormlite.field.ForeignCollectionField;
-import com.j256.ormlite.table.DatabaseTable;
-import com.j256.ormlite.table.DatabaseTableConfig;
-import com.j256.ormlite.table.DatabaseTableConfigLoader;
 
 /**
  * Database configuration file helper class that is used to write a configuration file into the raw resource

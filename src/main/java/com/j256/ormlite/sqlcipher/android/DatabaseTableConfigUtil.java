@@ -1,11 +1,4 @@
-package com.j256.ormlite.android;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Proxy;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+package com.j256.ormlite.sqlcipher.android;
 
 import com.j256.ormlite.db.DatabaseType;
 import com.j256.ormlite.field.DataPersister;
@@ -14,6 +7,13 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.DatabaseFieldConfig;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTableConfig;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Proxy;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class which uses reflection to make the job of processing the {@link DatabaseField} annotation more efficient. In

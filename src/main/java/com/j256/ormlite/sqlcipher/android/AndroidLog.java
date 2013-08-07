@@ -1,7 +1,6 @@
-package com.j256.ormlite.android;
+package com.j256.ormlite.sqlcipher.android;
 
 import android.util.Log;
-
 import com.j256.ormlite.logger.LoggerFactory;
 
 /**

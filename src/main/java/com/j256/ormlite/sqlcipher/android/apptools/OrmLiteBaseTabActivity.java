@@ -1,32 +1,22 @@
-package com.j256.ormlite.android.apptools;
+package com.j256.ormlite.sqlcipher.android.apptools;
 
-import android.app.Activity;
+import android.app.TabActivity;
 import android.content.Context;
 import android.os.Bundle;
-
-import com.j256.ormlite.logger.Logger;
-import com.j256.ormlite.logger.LoggerFactory;
 import com.j256.ormlite.support.ConnectionSource;
 
 /**
- * Base class to use for activities in Android.
+ * Base class to use for Tab activities in Android.
  * 
- * You can simply call {@link #getHelper()} to get your helper class, or {@link #getConnectionSource()} to get a
- * {@link ConnectionSource}.
- * 
- * The method {@link #getHelper()} assumes you are using the default helper factory -- see {@link OpenHelperManager}. If
- * not, you'll need to provide your own helper instances which will need to implement a reference counting scheme. This
- * method will only be called if you use the database, and only called once for this activity's life-cycle. 'close' will
- * also be called once for each call to createInstance.
+ * For more information, see {@link OrmLiteBaseActivity}.
  * 
  * @author graywatson, kevingalligan
  */
-public abstract class OrmLiteBaseActivity<H extends OrmLiteSqliteOpenHelper> extends Activity {
+public abstract class OrmLiteBaseTabActivity<H extends OrmLiteSqliteOpenHelper> extends TabActivity {
 
 	private volatile H helper;
 	private volatile boolean created = false;
 	private volatile boolean destroyed = false;
-	private static Logger logger = LoggerFactory.getLogger(OrmLiteBaseActivity.class);
 
 	/**
 	 * Get a helper for this action.
@@ -78,11 +68,12 @@ public abstract class OrmLiteBaseActivity<H extends OrmLiteSqliteOpenHelper> ext
 	 * <b> NOTE: </b> If you override this method, you most likely will need to override the
 	 * {@link #releaseHelper(OrmLiteSqliteOpenHelper)} method as well.
 	 * </p>
+	 * 
+	 * @see OpenHelperManager#getHelper(Context)
 	 */
 	protected H getHelperInternal(Context context) {
 		@SuppressWarnings({ "unchecked", "deprecation" })
 		H newHelper = (H) OpenHelperManager.getHelper(context);
-		logger.trace("{}: got new helper {} from OpenHelperManager", this, newHelper);
 		return newHelper;
 	}
 
@@ -97,12 +88,6 @@ public abstract class OrmLiteBaseActivity<H extends OrmLiteSqliteOpenHelper> ext
 	 */
 	protected void releaseHelper(H helper) {
 		OpenHelperManager.releaseHelper();
-		logger.trace("{}: helper {} was released, set to null", this, helper);
 		this.helper = null;
-	}
-
-	@Override
-	public String toString() {
-		return getClass().getSimpleName() + "@" + Integer.toHexString(super.hashCode());
 	}
 }

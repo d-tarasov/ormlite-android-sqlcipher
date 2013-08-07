@@ -1,25 +1,17 @@
-package com.j256.ormlite.android.apptools;
+package com.j256.ormlite.sqlcipher.android.apptools;
 
-import android.app.ActivityGroup;
+import android.app.Service;
 import android.content.Context;
-import android.os.Bundle;
-
 import com.j256.ormlite.support.ConnectionSource;
 
 /**
- * Base class to use for activity groups in Android.
+ * Base class to use for services in Android.
  * 
- * You can simply call {@link #getHelper()} to get your helper class, or {@link #getConnectionSource()} to get a
- * {@link ConnectionSource}.
- * 
- * The method {@link #getHelper()} assumes you are using the default helper factory -- see {@link OpenHelperManager}. If
- * not, you'll need to provide your own helper instances which will need to implement a reference counting scheme. This
- * method will only be called if you use the database, and only called once for this activity's life-cycle. 'close' will
- * also be called once for each call to createInstance.
+ * For more information, see {@link OrmLiteBaseActivity}.
  * 
  * @author graywatson, kevingalligan
  */
-public abstract class OrmLiteBaseActivityGroup<H extends OrmLiteSqliteOpenHelper> extends ActivityGroup {
+public abstract class OrmLiteBaseService<H extends OrmLiteSqliteOpenHelper> extends Service {
 
 	private volatile H helper;
 	private volatile boolean created = false;
@@ -51,16 +43,16 @@ public abstract class OrmLiteBaseActivityGroup<H extends OrmLiteSqliteOpenHelper
 	}
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate() {
 		if (helper == null) {
 			helper = getHelperInternal(this);
 			created = true;
 		}
-		super.onCreate(savedInstanceState);
+		super.onCreate();
 	}
 
 	@Override
-	protected void onDestroy() {
+	public void onDestroy() {
 		super.onDestroy();
 		releaseHelper(helper);
 		destroyed = true;

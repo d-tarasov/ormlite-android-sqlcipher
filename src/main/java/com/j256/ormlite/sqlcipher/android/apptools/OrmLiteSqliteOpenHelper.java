@@ -1,29 +1,22 @@
-package com.j256.ormlite.android.apptools;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.sql.SQLException;
+package com.j256.ormlite.sqlcipher.android.apptools;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
-import android.database.sqlite.SQLiteOpenHelper;
-
-import com.j256.ormlite.android.AndroidConnectionSource;
-import com.j256.ormlite.android.AndroidDatabaseConnection;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.logger.Logger;
 import com.j256.ormlite.logger.LoggerFactory;
+import com.j256.ormlite.sqlcipher.android.AndroidConnectionSource;
+import com.j256.ormlite.sqlcipher.android.AndroidDatabaseConnection;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.support.DatabaseConnection;
 import com.j256.ormlite.table.DatabaseTableConfigLoader;
+import net.sqlcipher.database.SQLiteDatabase;
+import net.sqlcipher.database.SQLiteDatabase.CursorFactory;
+import net.sqlcipher.database.SQLiteOpenHelper;
+
+import java.io.*;
+import java.sql.SQLException;
 
 /**
  * SQLite database open helper which can be extended by your application to help manage when the application needs to
@@ -36,6 +29,7 @@ public abstract class OrmLiteSqliteOpenHelper extends SQLiteOpenHelper {
 	protected static Logger logger = LoggerFactory.getLogger(OrmLiteSqliteOpenHelper.class);
 	protected AndroidConnectionSource connectionSource = new AndroidConnectionSource(this);
 	private volatile boolean isOpen = true;
+    private String password;
 
 	/**
 	 * @param context
@@ -70,8 +64,8 @@ public abstract class OrmLiteSqliteOpenHelper extends SQLiteOpenHelper {
 	 *            file-id which probably should be a R.raw.ormlite_config.txt or some static value.
 	 */
 	public OrmLiteSqliteOpenHelper(Context context, String databaseName, CursorFactory factory, int databaseVersion,
-			int configFileId) {
-		this(context, databaseName, factory, databaseVersion, openFileId(context, configFileId));
+			int configFileId, String password) {
+		this(context, databaseName, factory, databaseVersion, openFileId(context, configFileId), password);
 	}
 
 	/**
@@ -90,8 +84,8 @@ public abstract class OrmLiteSqliteOpenHelper extends SQLiteOpenHelper {
 	 *            Configuration file to be loaded.
 	 */
 	public OrmLiteSqliteOpenHelper(Context context, String databaseName, CursorFactory factory, int databaseVersion,
-			File configFile) {
-		this(context, databaseName, factory, databaseVersion, openFile(configFile));
+			File configFile, String password) {
+		this(context, databaseName, factory, databaseVersion, openFile(configFile), password);
 	}
 
 	/**
@@ -111,8 +105,9 @@ public abstract class OrmLiteSqliteOpenHelper extends SQLiteOpenHelper {
 	 *            Stream opened to the configuration file to be loaded.
 	 */
 	public OrmLiteSqliteOpenHelper(Context context, String databaseName, CursorFactory factory, int databaseVersion,
-			InputStream stream) {
+			InputStream stream, String password) {
 		super(context, databaseName, factory, databaseVersion);
+        this.password = password;
 		if (stream == null) {
 			return;
 		}
@@ -298,6 +293,10 @@ public abstract class OrmLiteSqliteOpenHelper extends SQLiteOpenHelper {
 			throw new RuntimeException("Could not create RuntimeExcepitionDao for class " + clazz, e);
 		}
 	}
+
+    public String getPassword() {
+        return password;
+    }
 
 	@Override
 	public String toString() {

@@ -1,4 +1,10 @@
-package com.j256.ormlite.android;
+package com.j256.ormlite.sqlcipher.android;
+
+import android.database.Cursor;
+import com.j256.ormlite.dao.ObjectCache;
+import com.j256.ormlite.db.DatabaseType;
+import com.j256.ormlite.sqlcipher.db.SqliteAndroidDatabaseType;
+import com.j256.ormlite.support.DatabaseResults;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -8,13 +14,6 @@ import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
-import android.database.Cursor;
-
-import com.j256.ormlite.dao.ObjectCache;
-import com.j256.ormlite.db.DatabaseType;
-import com.j256.ormlite.db.SqliteAndroidDatabaseType;
-import com.j256.ormlite.support.DatabaseResults;
 
 /**
  * Android implementation of our results object.

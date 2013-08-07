@@ -1,9 +1,8 @@
-package com.j256.ormlite.android.apptools;
+package com.j256.ormlite.sqlcipher.android.apptools;
 
 import android.app.ListActivity;
 import android.content.Context;
 import android.os.Bundle;
-
 import com.j256.ormlite.support.ConnectionSource;
 
 /**

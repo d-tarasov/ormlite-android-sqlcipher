@@ -1,13 +1,6 @@
-package com.j256.ormlite.android;
-
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+package com.j256.ormlite.sqlcipher.android;
 
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteStatement;
-
 import com.j256.ormlite.dao.ObjectCache;
 import com.j256.ormlite.field.SqlType;
 import com.j256.ormlite.logger.Logger;
@@ -16,6 +9,12 @@ import com.j256.ormlite.misc.SqlExceptionUtil;
 import com.j256.ormlite.stmt.StatementBuilder.StatementType;
 import com.j256.ormlite.support.CompiledStatement;
 import com.j256.ormlite.support.DatabaseResults;
+import net.sqlcipher.database.SQLiteDatabase;
+import net.sqlcipher.database.SQLiteStatement;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Android implementation of the compiled statement.
