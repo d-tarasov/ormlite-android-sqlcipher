@@ -26,21 +26,27 @@ import java.sql.Savepoint;
  */
 public class AndroidDatabaseConnection implements DatabaseConnection {
 
-	private static final String ANDROID_VERSION = "VERSION__4.45__";
+	private static final String ANDROID_VERSION = "VERSION__4.48-SNAPSHOT__";
 
 	private static Logger logger = LoggerFactory.getLogger(AndroidDatabaseConnection.class);
 	private static final String[] NO_STRING_ARGS = new String[0];
 
 	private final SQLiteDatabase db;
 	private final boolean readWrite;
+	private final boolean cancelQueriesEnabled;
 
 	static {
 		VersionUtils.checkCoreVersusAndroidVersions(ANDROID_VERSION);
 	}
 
 	public AndroidDatabaseConnection(SQLiteDatabase db, boolean readWrite) {
+		this(db, readWrite, false);
+	}
+
+	public AndroidDatabaseConnection(SQLiteDatabase db, boolean readWrite, boolean cancelQueriesEnabled) {
 		this.db = db;
 		this.readWrite = readWrite;
+		this.cancelQueriesEnabled = cancelQueriesEnabled;
 		logger.trace("{}: db {} opened, read-write = {}", this, db, readWrite);
 	}
 
@@ -103,7 +109,11 @@ public class AndroidDatabaseConnection implements DatabaseConnection {
 				logger.trace("{}: transaction {} is successfuly ended", this, savepoint.getSavepointName());
 			}
 		} catch (android.database.SQLException e) {
-			throw SqlExceptionUtil.create("problems commiting transaction " + savepoint.getSavepointName(), e);
+			if (savepoint == null) {
+				throw SqlExceptionUtil.create("problems commiting transaction", e);
+			} else {
+				throw SqlExceptionUtil.create("problems commiting transaction " + savepoint.getSavepointName(), e);
+			}
 		}
 	}
 
@@ -117,7 +127,11 @@ public class AndroidDatabaseConnection implements DatabaseConnection {
 				logger.trace("{}: transaction {} is ended, unsuccessfuly", this, savepoint.getSavepointName());
 			}
 		} catch (android.database.SQLException e) {
-			throw SqlExceptionUtil.create("problems rolling back transaction " + savepoint.getSavepointName(), e);
+			if (savepoint == null) {
+				throw SqlExceptionUtil.create("problems rolling back transaction", e);
+			} else {
+				throw SqlExceptionUtil.create("problems rolling back transaction " + savepoint.getSavepointName(), e);
+			}
 		}
 	}
 
@@ -125,16 +139,12 @@ public class AndroidDatabaseConnection implements DatabaseConnection {
 		return AndroidCompiledStatement.execSql(db, statementStr, statementStr, NO_STRING_ARGS);
 	}
 
-	public CompiledStatement compileStatement(String statement, StatementType type, FieldType[] argFieldTypes) {
-		CompiledStatement stmt = new AndroidCompiledStatement(statement, db, type);
-		logger.trace("{}: compiled statement got {}: {}", this, stmt, statement);
-		return stmt;
-	}
-
 	public CompiledStatement compileStatement(String statement, StatementType type, FieldType[] argFieldTypes,
 			int resultFlags) {
 		// resultFlags argument is not used in Android-land since the {@link Cursor} is bi-directional.
-		return compileStatement(statement, type, argFieldTypes);
+		CompiledStatement stmt = new AndroidCompiledStatement(statement, db, type, cancelQueriesEnabled);
+		logger.trace("{}: compiled statement got {}: {}", this, stmt, statement);
+		return stmt;
 	}
 
 	public int insert(String statement, Object[] args, FieldType[] argFieldTypes, GeneratedKeyHolder keyHolder)
@@ -268,7 +278,7 @@ public class AndroidDatabaseConnection implements DatabaseConnection {
 				db.rawQuery("SELECT DISTINCT tbl_name FROM sqlite_master WHERE tbl_name = '" + tableName + "'", null);
 		try {
 			boolean result;
-			if (cursor != null && cursor.getCount() > 0) {
+			if (cursor.getCount() > 0) {
 				result = true;
 			} else {
 				result = false;

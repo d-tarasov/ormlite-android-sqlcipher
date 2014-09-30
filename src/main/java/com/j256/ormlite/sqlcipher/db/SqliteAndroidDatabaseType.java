@@ -1,7 +1,6 @@
 package com.j256.ormlite.sqlcipher.db;
 
 import com.j256.ormlite.db.BaseSqliteDatabaseType;
-import com.j256.ormlite.db.DatabaseType;
 import com.j256.ormlite.field.DataPersister;
 import com.j256.ormlite.field.FieldConverter;
 import com.j256.ormlite.field.FieldType;
@@ -17,7 +16,7 @@ import java.sql.SQLException;
  * 
  * @author graywatson
  */
-public class SqliteAndroidDatabaseType extends BaseSqliteDatabaseType implements DatabaseType {
+public class SqliteAndroidDatabaseType extends BaseSqliteDatabaseType {
 
 	@Override
 	public void loadDriver() {
