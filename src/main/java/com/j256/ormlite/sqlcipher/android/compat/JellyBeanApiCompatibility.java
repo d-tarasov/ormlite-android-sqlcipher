@@ -1,8 +1,9 @@
 package com.j256.ormlite.sqlcipher.android.compat;
 
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.CancellationSignal;
+
+import net.sqlcipher.database.SQLiteDatabase;
 
 /**
  * Basic class which provides no-op methods for all Android version.
@@ -17,11 +18,9 @@ public class JellyBeanApiCompatibility extends BasicApiCompatibility {
 
 	@Override
 	public Cursor rawQuery(SQLiteDatabase db, String sql, String[] selectionArgs, CancellationHook cancellationHook) {
-		if (cancellationHook == null) {
-			return db.rawQuery(sql, selectionArgs);
-		} else {
-			return db.rawQuery(sql, selectionArgs, ((JellyBeanCancellationHook) cancellationHook).cancellationSignal);
-		}
+        // NOTE: in patched version this is the same as BasicApiCompatibility
+        // because SqlCipher supports Android version lower than API level 16 (Jelly Bean)
+        return db.rawQuery(sql, selectionArgs);
 	}
 
 	@Override

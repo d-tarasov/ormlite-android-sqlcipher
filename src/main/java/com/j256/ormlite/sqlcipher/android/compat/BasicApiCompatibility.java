@@ -1,7 +1,8 @@
 package com.j256.ormlite.sqlcipher.android.compat;
 
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+
+import net.sqlcipher.database.SQLiteDatabase;
 
 /**
  * Basic class which provides no-op methods for all Android version.
