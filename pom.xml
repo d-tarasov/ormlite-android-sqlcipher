@@ -3,7 +3,7 @@
 	<!-- ormlite configuration file for Maven (http://maven.apache.org/) -->
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.j256.ormlite</groupId>
-	<artifactId>ormlite-android</artifactId>
+	<artifactId>ormlite-android-sqlcipher</artifactId>
 	<version>4.48</version>
 	<packaging>jar</packaging>
 	<name>ORMLite Android</name>
@@ -22,9 +22,9 @@
 		<version>7</version>
 	</parent>
 	<scm>
-		<url>https://github.com/j256/ormlite-android</url>
-		<connection>scm:git:ssh://git@github.com/j256/ormlite-android.git</connection>
-		<developerConnection>scm:git:ssh://git@github.com/j256/ormlite-android.git</developerConnection>
+		<url>https://github.com/d-tarasov/ormlite-android-sqlcipher</url>
+		<connection>scm:git:ssh://git@github.com:d-tarasov/ormlite-android-sqlcipher.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com:d-tarasov/ormlite-android-sqlcipher.git</developerConnection>
 	</scm>
 	<developers>
 		<developer>
@@ -73,7 +73,7 @@
 		</profile>
 	</profiles>
 	<build>
-		<finalName>ormlite-android</finalName>
+		<finalName>ormlite-android-sqlcipher</finalName>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
